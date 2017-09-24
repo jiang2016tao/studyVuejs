@@ -9,12 +9,57 @@
     <div id="app">
         <p>{{ message }}</p>
     </div>
+
+    <p>指令实例</p>
+    <div id="app-2">
+      <span v-bind:title="message">
+        鼠标悬停几秒钟查看此处动态绑定的提示信息！
+      </span>
+    </div>
+
+    <div id="app-4">
+        <ol>
+            <li v-for="todo in todos">
+                {{ todo.text }}
+            </li>
+        </ol>
+    </div>
+
+    <p>条件</p>
+    <div id="app-3">
+        <p v-if="seen">现在你看到我了</p>
+    </div>
 </body>
 <script>
     new Vue({
         el: '#app',
         data: {
             message: 'Hello Vue.js!'
+        }
+    });
+
+    var app2 = new Vue({
+        el: '#app-2',
+        data: {
+            message: '页面加载于 ' + new Date().toLocaleString()
+        }
+    });
+
+    var app3 = new Vue({
+        el: '#app-3',
+        data: {
+            seen: true
+        }
+    });
+
+    var app4 = new Vue({
+        el: '#app-4',
+        data: {
+            todos: [
+                { text: '学习 JavaScript' },
+                { text: '学习 Vue' },
+                { text: '整个牛项目' }
+            ]
         }
     })
 </script>
