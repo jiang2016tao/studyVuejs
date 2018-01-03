@@ -12,3 +12,5 @@ vue官网学习：https://cn.vuejs.org/v2/guide/index.html
                             <span>jiang</span>
                         </li>
 ```
+# vue中修改了数据但视图无法更新的情况  
+参考：http://blog.csdn.net/github_38771368/article/details/77155939
