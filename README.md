@@ -27,3 +27,14 @@ vue官网学习：https://cn.vuejs.org/v2/guide/index.html
                     <graph-highchart :data="graph.graphMetricData"></graph-highchart>
                 </div>
 ```
+# 链接的跳转  
+学会使用在属性里动态拼接值  
+```html
+<router-link :to="{path:'metricDetail?graphId='+graph.graphId+'&title='+graph.graphName}" target="_blank">
+                                <i class="wbk-ground-img-FullScr_Dft"></i>
+                            </router-link>
+                            <!--<a :herf="'#/metricDetail?grpahId='+graph.graphId+'&title='+graph.graphName" target="_blank">
+                                <i class="wbk-ground-img-FullScr_Dft"></i>
+                            </a>-->
+```
+不知道为什么使用下面的a标签点击不会跳转，看官网是推荐使用router-link标签.
