@@ -38,3 +38,13 @@ vue官网学习：https://cn.vuejs.org/v2/guide/index.html
                             </a>-->
 ```
 不知道为什么使用下面的a标签点击不会跳转，看官网是推荐使用router-link标签.
+# vue和angularjs的区别  
+例如，给标签动态赋值样式  
+vue
+```html
+<i :class="{'wbk-ground-img-Layout1_Dft':col==24,'wbk-ground-img-Layout2_Dft':col==12,'wbk-ground-img-Layout3_Dft':col==8}"></i>
+```
+angular  
+```html
+<i :class="{'wbk-ground-img-Layout1_Dft':24,'wbk-ground-img-Layout2_Dft':12,'wbk-ground-img-Layout3_Dft':8}[col]"></i>
+```
