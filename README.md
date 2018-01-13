@@ -48,3 +48,5 @@ angular
 ```html
 <i :class="{'wbk-ground-img-Layout1_Dft':24,'wbk-ground-img-Layout2_Dft':12,'wbk-ground-img-Layout3_Dft':8}[col]"></i>
 ```
+# axios的使用  
+https://www.kancloud.cn/yunye/axios/234845
