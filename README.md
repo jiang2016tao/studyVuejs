@@ -50,3 +50,20 @@ angular
 ```
 # axios的使用  
 https://www.kancloud.cn/yunye/axios/234845
+在做页面中，我们会在一次交互中需要发送多个请求，这些请求需要按照一定的顺序，串行执行，在axios中这样使用：  
+```js
+axios(param).then(data=>{
+          if(data.data.data){
+            var curData = data.data.data
+            globalMap.set('data',curData)
+          }
+          if(data.data.systemTime){
+            this.systemTimes = data.data.systemTime.substring(0,16)
+          }
+        }).then(function () {
+          self.parameterSquare()
+        }).then(function () {
+          self.$store.dispatch('hideSpin')
+        })
+```
+这样就是第一次发送请求，后处理完第一个then里的逻辑之后再去处理第二个then里js函数发请求和处理逻辑。
