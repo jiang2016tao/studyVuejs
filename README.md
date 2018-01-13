@@ -50,7 +50,7 @@ angular
 ```
 # axios的使用  
 https://www.kancloud.cn/yunye/axios/234845
-在做页面中，我们会在一次交互中需要发送多个请求，这些请求需要按照一定的顺序，串行执行，在axios中这样使用：  
+1.在做页面中，我们会在一次交互中需要发送多个请求，这些请求需要按照一定的顺序，串行执行，在axios中这样使用：  
 ```js
 axios(param).then(data=>{
           if(data.data.data){
@@ -67,3 +67,20 @@ axios(param).then(data=>{
         })
 ```
 这样就是第一次发送请求，后处理完第一个then里的逻辑之后再去处理第二个then里js函数发请求和处理逻辑。
+2.如果需要并发请求，并且等到所有请求完之后，在对结果进行处理，可以采用下面的方法：  
+```js
+axios.all([
+            axios.get("a.txt"),
+            axios.get("b.txt")
+    ]).then(axios.spread(function (userResp, reposResp) {
+
+        // 上面两个请求都完成后，才执行这个回调方法
+
+        console.log('User', userResp.data);
+
+        console.log('Repositories', reposResp.data);
+
+    }));
+```
+当后面的请求需要前一个请求的结果里的值作为参数时，我们可以采用前面的第一种方式；如果几个请求的参数没有需要其他请求的结果里的值，  
+只是页面逻辑需要几个请求结果的值都有才好处理的，我们可以采用第二种方式来做；至于根本没关系的，就并发请求处理结果就可以了。

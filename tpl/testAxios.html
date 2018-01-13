@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+</head>
+<body>
+
+</body>
+<script>
+    axios.all([
+            axios.get("a.txt"),
+            axios.get("b.txt")
+    ]).then(axios.spread(function (userResp, reposResp) {
+
+        // 上面两个请求都完成后，才执行这个回调方法
+
+        console.log('User', userResp.data);
+
+        console.log('Repositories', reposResp.data);
+
+    }));
+</script>
+</html>
