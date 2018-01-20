@@ -101,8 +101,21 @@ const app = new Vue({
 })
 ```
 通过在根实例中注册 store 选项，该 store 实例会注入到根组件下的所有子组件中，且子组件能通过 this.$store 访问到。(解释我最初的疑惑)  
-vuex使用场景
-# vue-cli  
+vuex使用场景  
+vuex使用步骤：  
+1.在根实例注册一个store的实例。  
+2.在VUE组件中条用实例中的action。  
+```js
+methods:mapActions([
+      'increment'/*,
+      'decrement',
+      'clickOdd',
+      'clickAsync'*/
+    ])
+```
+3.action将commit给mutations来处理，逻辑都在mutations里。  
+可以结合项目学习：https://github.com/jiang2016tao/studyVueProject  
+# vue-cli  
 ## npm install vue-cli -g  //全局安装vue-cli命令行工具  
 ## vue init webpack myProject  //创建基于webpack模板的新项目【注意，这里项目名称myProject不能有横杠否则要报错的],这里注意下，vue build版本一般是默认的，直接enter，然后什么单元测试，eslint检查，统统直接不要，只要一个vue-router路由。
 ## cd myProject  //进入到刚刚下载的项目  
