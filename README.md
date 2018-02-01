@@ -121,3 +121,32 @@ methods:mapActions([
 ## cd myProject  //进入到刚刚下载的项目  
 ## npm install  //安装插件依赖，安装完后会在项目下面发现生成了一个node_modules文件目录。vue组件编译，es6语法编译，css语法编译...都会使用到  
 ## npm run dev  //运行项目，开始你的开发里程
+# keep-alive  
+1、keep-alive要配合router-view使用，这里要注意一点就是，keep-alive本身是vue2.0的功能，并不是vue-router的，所以再vue1.0版本是不支持的。在项目中我们有些页面需要缓存，有些页面需要及时刷新是不能使用缓存的，那要怎么自定义呢，那就要在router-view里面多加个v-if判断了，然后在router定义的文件里面在想要缓存的页面多加上“meta:{keepAlive:true}”，不想要缓存就是“meta:{keepAlive:false}”或者不写，只有为true的时候是会被keep-alive识别然后缓存的。示例代码  
+```html
+<keep-alive>
+              <router-view v-if="$route.meta.keepAlive"></router-view>
+          </keep-alive>
+          <router-view v-if="!$route.meta.keepAlive"></router-view>
+```
+```js
+{
+        path: '/newHomePage/',
+        component: newHomePage,
+        hidden: true,
+        children: [
+            { path: 'metricView', component:metricView,meta:{
+                keepAlive:true
+                }},
+            { path: 'graphSearchForm', component:graphSearchForm }
+        ]
+    }
+```
+可以看出我们是配在一个子路径下面的，如果是从根目录返回，那样是没有效果的。其实我自己尝试在根目录的路由出加上。以下代码  
+```html
+<keep-alive>
+              <router-view v-if="$route.meta.keepAlive"></router-view>
+          </keep-alive>
+          <router-view v-if="!$route.meta.keepAlive"></router-view>
+```
+发现这样的配置是有问题的。虽然每次返回不会再重新渲染我缓存的页面了，但是每次跳转后都会重新实例化我的组件，就是跳转后缓存页面的组件会发请求。keep-alive使用后组件是不会销毁的，那么就不应该会再次调用created、mounted等这些组件声明周期的函数了，可是上面配置之后这些函数都有执行，那就说明重新实例化了组件。
