@@ -20,3 +20,60 @@ handleCurrentChange(val){
                 this.aelInit();
             },
 ```
+## el-table  
+表格这是一个经常用到的，在移动小屏幕上很多字段是不会展示全的，所以需要有可以查看详情的，这里就提供了支持。可以结合文档说明来使用。开始以为只能按照文档的格式来写，后来发现其实详情里面的html是可以自己随意布局的。
+```html
+<el-table>
+<el-table-column type="expand">
+  <template slot-scope="scope">
+    <!--<el-form inline class="demo-table-expand">-->
+    <el-row>
+      <el-col :span="12">
+        <label class="title-label">告警级别:</label>
+        <span :class="scope.row.alertLevel | alertLevelClass">{{scope.row.alertLevel | alertLevelName}}</span>
+      </el-col>
+      <el-col :span="12">
+        <label class="title-label">告警标题:</label>
+        <span class="span-value">{{scope.row.alertTitle}}</span>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12">
+        <label class="title-label">首次告警:</label>
+        <span class="span-value">{{scope.row.firstAlertTime | timestampFormat}}</span>
+      </el-col>
+      <el-col :span="12">
+        <label class="title-label">最近告警:</label>
+        <span class="span-value">{{scope.row.firstAlertTime | timestampFormat}}</span>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12">
+        <label class="title-label">所属业务:</label>
+        <span class="span-value">{{scope.row.domainCnName}}</span>
+      </el-col>
+      <el-col :span="12">
+        <label class="title-label">子系统:</label>
+        <span class="span-value">{{scope.row.subSystemEnName}}</span>
+      </el-col>
+    </el-row>
+    <el-row>
+      <el-col :span="12">
+        <label class="title-label">运维部门:</label>
+        <span class="span-value">{{scope.row.opDep}}</span>
+      </el-col>
+      <el-col :span="12">
+        <label class="title-label">IP:</label>
+        <span class="span-value">{{scope.row.alertIp}}</span>
+      </el-col>
+    </el-row>
+  </template>
+</el-table-column>
+
+<el-table-column label="告警级别">
+  <template slot-scope="scope">
+    <span :class="scope.row.alertLevel | alertLevelClass">{{scope.row.alertLevel | alertLevelName}}</span>
+  </template>
+</el-table-column>
+<el-table>
+```
