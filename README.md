@@ -167,4 +167,20 @@ deactivated
 其实，我们可以在修改数据后调用this.$nextTick，首次加载在mounted函数里面调用this.$nextTick  
 this.$nextTick(function () {  
 //dom已更新  
-})  
+})  
+# 在vue中，我们很多情况共用页面，只是路由的参数不一样。当路由的参数不一样的时候，组件是不是重新生成或页面重新加载的。这个时候，我们应该监听路由，然后调用获取数据的方法，重绘视图。  
+如：监听路由，调用重绘视图的aelInit方法。
+```js
+mounted(){
+            this.$nextTick(function () {
+                
+                
+                this.getDomain();
+                this.getAllCitype();
+                this.aelInit();
+            });
+        },
+        watch:{
+            "$route":"aelInit"
+        },
+```
