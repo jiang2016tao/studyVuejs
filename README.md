@@ -203,3 +203,13 @@ http://blog.csdn.net/one_girl/article/details/78737740
 ```
 如上面我有两个样式span-td（是给表格的每个单元格的样式）和b-c-7eb138（是表格子组件的自身样式）。结果发现b-c-7eb138样式有效，span-td样式无效。  
 发现是样式编写使用了scoped。<style scoped>，这样的样式只会对本组件有效，虽然本组件里有子组件，那也只是对子组件的根组件布局样式有效，子组件的根组件下的其他html节点将不会受样式的影响了。
+如果想对设置了scoped的子组件里的元素进行控制可以使用’>>>’或者’deep’  
+  ```html
+  <metric-aside class="test-root-class" @listenerToTagEvent="tagEvent"></metric-aside>
+  ```
+  如果想改变子组件metric-aside的样式可以这样使用,注意test-root-class是类名。
+  ```js
+  .test-root-class >>> .input-div{
+        background-color: #000000;
+    }
+  ```
