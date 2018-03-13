@@ -193,3 +193,13 @@ Object.keys(filters).forEach(key => {
 });
 ```
 当然也可以本地注册这样只能在本组件中使用，可以用“|”连续使用多个过滤器，可以为过滤器添加参数。https://www.w3cplus.com/vue/how-to-create-filters-in-vuejs.html
+# vue组件中的样式属性--scoped
+http://blog.csdn.net/one_girl/article/details/78737740
+在使用样式发现没有生效。
+```html
+<el-table :data="aelData.comAlertLists" cell-class-name="span-td" class="b-c-7eb138">
+  ……
+  </el-table>
+```
+如上面我有两个样式span-td（是给表格的每个单元格的样式）和b-c-7eb138（是表格子组件的自身样式）。结果发现b-c-7eb138样式有效，span-td样式无效。  
+发现是样式编写使用了scoped。<style scoped>，这样的样式只会对本组件有效，虽然本组件里有子组件，那也只是对子组件的根组件布局样式有效，子组件的根组件下的其他html节点将不会受样式的影响了。
