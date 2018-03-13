@@ -184,3 +184,12 @@ mounted(){
             "$route":"aelInit"
         },
 ```
+# filter 过滤器
+我们将项目中的过滤器放置在一个单独的js文件中，然后在首页index.js中进行全局注册，这样过滤器就可以在所有组件中使用，不需要引入的。  
+```js
+import * as filters from './utils/filters'
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+});
+```
+当然也可以本地注册这样只能在本组件中使用，可以用“|”连续使用多个过滤器，可以为过滤器添加参数。https://www.w3cplus.com/vue/how-to-create-filters-in-vuejs.html
