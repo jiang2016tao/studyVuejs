@@ -214,3 +214,37 @@ http://blog.csdn.net/one_girl/article/details/78737740
         background-color: #000000;
     }
   ```
+  # Mock(数据的模拟)  
+  在开发中，我们采用前后端分离。在没有后端时，我们前端对数据的模拟。  
+  以前我都是将数据以约定的特定json格式写在文件里，然后ajax直接访问该文件这样处理。  
+  今天在使用另一种方法，使用node的express。首先需要准备一个json文件，文件可以在https://github.com/jiang2016tao/vue_seller/blob/master/data.json。  
+  在webpack的启动文件里添加路由设置,注意这个监听app.listen(8080)（端口号，必须和环境的服务器配置的一致）;我之前开始就没加，怎么都用连接访问不到。  
+  ```js
+  var express = require('express');
+  var apiRoutes = express.Router();
+  
+  apiRoutes.get('/seller', function (req, res) {
+    res.json({
+      errno: 0,
+      data: seller
+    });
+  });
+  
+  apiRoutes.get('/goods', function (req, res) {
+    res.json({
+      errno: 0,
+      data: goods
+    });
+  });
+  
+  apiRoutes.get('/ratings', function (req, res) {
+    res.json({
+      errno: 0,
+      data: ratings
+    });
+  });
+  
+  app.use('/api', apiRoutes);
+  app.listen(8080);
+  ```
+  启动环境后，就可以测试了http://localhost:8080/api/seller
