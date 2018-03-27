@@ -118,7 +118,7 @@ methods:mapActions([
 # vue-cli  
 ## npm install vue-cli -g  //全局安装vue-cli命令行工具  
 ## vue init webpack myProject  //创建基于webpack模板(这里也可以是其他的模板，可以使用vue list命令查看)的新项目【注意，这里项目名称myProject不能有横杠否则要报错的],这里注意下，vue build版本一般是默认的，直接enter，然后什么单元测试，eslint检查，统统直接不要，只要一个vue-router路由。
-<img src="./wikiImg/vue_list.PNG"/>
+<img src="./wikiImg/vue_list.PNG"/>  
 ## cd myProject  //进入到刚刚下载的项目  
 ## npm install  //安装插件依赖，安装完后会在项目下面发现生成了一个node_modules文件目录。vue组件编译，es6语法编译，css语法编译...都会使用到  
 ## npm run dev  //运行项目，开始你的开发里程
