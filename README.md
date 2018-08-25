@@ -210,6 +210,62 @@ binding:{
    }
 ```
 - vnode: Vue编译生成的虚拟节点。  
+2.自定义指令的生命周期  
+自定义指令有五个生命周期（也叫钩子函数），分别是 bind,inserted,update,componentUpdated,unbind  
+- bind:只调用一次，指令第一次绑定到元素时调用，用这个钩子函数可以定义一个绑定时执行一次的初始化动作。  
+- inserted:被绑定元素插入父节点时调用（父节点存在即可调用，不必存在于document中）。  
+- update:被绑定于元素所在的模板更新时调用，而无论绑定值是否变化。通过比较更新前后的绑定值，可以忽略不必要的模板更新。  
+- componentUpdated:被绑定元素所在模板完成一次更新周期时调用。  
+- unbind:只调用一次，指令与元素解绑时调用。  
+示例代码：  
+```html
+<div id="app">
+    <div v-jiang="color">{{num}}</div>
+    <button @click="add">add</button>
+    <div>
+        <button id="btn">解绑</button>
+    </div>
+</div>
+<script>
+    Vue.directive("jiang",{
+        bind:function(el,binging){//被绑定
+            console.log('1 - bind');
+            el.style.color=binging.value;
+        },
+        inserted:function(){//绑定到节点
+            console.log('2 - inserted');
+        },
+        update:function(){//组件更新
+            console.log('3 - update');
+        },
+        componentUpdated:function(){//组件更新完成
+            console.log('4 - componentUpdated');
+        },
+        unbind:function(){//解绑
+            console.log('5 - unbind');
+        }
+    });
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:10,
+            color:"red"
+        },
+        methods:{
+            add() {
+                this.num++;
+            },
+        }
+    });
+    window.onload=()=>{
+        document.getElementById("btn").addEventListener("click",()=>{
+            app.$destroy();
+        })
+    };
+</script>
+```
+[指令的实用场景](https://blog.csdn.net/baidu_31333625/article/details/70473839)  
+[自定义指令的详细开发](https://segmentfault.com/a/1190000012566413)   
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
 # 组件通信  
