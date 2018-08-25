@@ -165,7 +165,9 @@ vue中样式的绑定不能按照常规的html的style格式来书写，需要�
 但是改用es6的箭头函数，就出现问题了。debugger发现this的指向变了，上面的this是Vue，而下面的确实window。  
 [this 指向详细解析（箭头函数）](https://www.cnblogs.com/dongcanliang/p/7054176.html)  
 作为方法的箭头函数this指向全局window对象，而普通函数则指向调用它的对象.所以在vue中使用箭头函数要注意this的指向  
-<code>那这样在Vue里岂不是只能使用普通函数来写了，应该会有其他方法使用箭头函数吧</code>  
+<code>
+    那这样在Vue里岂不是只能使用普通函数来写了，应该会有其他方法使用箭头函数吧
+</code>  
 箭头函数里面的 this 是一个常量，它继承自外围作用域  
 [代码重构_使用箭头函数精简你的 Vue 模块](http://imweb.io/topic/5848d21b9be501ba17b10a99)   
 自定义指令示例：
