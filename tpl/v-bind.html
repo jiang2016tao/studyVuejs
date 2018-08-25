@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+    <style>
+        .classA{
+            font-size: 18px;
+        }
+        .classB{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <img v-bind:src="imgSrc" height="50px" width="100px"/>
+            <img :src="imgSrc" height="50px" width="100px"/>
+        </div>
+
+        <div :class="divClass">绑定class</div>
+
+        <div>
+            <div>
+                <input type="checkbox" v-model="isOk">
+            </div>
+            <div :class="v_classA">直接绑定class</div>
+            <div :class="{classA:isOk,classB:!isOk}">绑定class条件判断</div>
+
+            <div :class="isOk?v_classA:v_classA">4、绑定class中的三元表达式判断</div>
+        </div>
+
+        <div :class="[v_classA,v_classA]">绑定class数组</div>
+
+        <!--错误写法-->
+        <!--<div :style="font-size:v_fontSize;color:v_color">绑定style</div>-->
+        <div :style="{fontSize:v_fontSize,color:v_color}">绑定style</div>
+
+        <div :style="styleObj">绑定style对象</div>
+    </div>
+
+
+<script>
+
+    let app=new Vue({
+        el:"#app",
+        data:{
+            imgSrc:"http://7xjyw1.com1.z0.glb.clouddn.com/bbbb_20180818070432.png",
+            divClass:"classA",
+            isOk:false,
+            v_classA:"classA",
+            v_classA:"classB",
+            v_fontSize:"14px",
+            v_color:"green",
+            styleObj:{fontSize:"14px",color:"gray"}
+        }
+
+    });
+</script>
+</body>
+</html>

@@ -1,4 +1,110 @@
 vue官网学习：https://cn.vuejs.org/v2/guide/index.html  
+[基本指令](http://jspang.com/2017/02/23/vue2_01/)  
+# v-model  
+v-model指令，我理解为绑定数据源。就是把数据绑定在特定的表单元素上，可以很容易的实现双向数据绑定。  
+*注意*  
+有几个修饰符  
+- .lazy：取代 imput 监听 change 事件。就是在文本输入的过程中数据绑定不会立即改变，当文本失去焦点blur的时候，数据源就会立刻改变。   
+- .number：输入字符串转为数字。这里主要是将输入的数字，一般情况js会作为字符串处理，给了这个修饰符后，就会作为数字类型的值来处理，当然输入的字符如果不是数字，那还是字符串。
+这个主要用在数字输入的文本框里。  
+- .trim：输入去掉首尾空格。  
+*js如何判断是数字*  
+[js中判断一个变量是否为数字类型的疑问](https://www.cnblogs.com/yyzyxy/p/7193577.html)  
+所以判断一个变量是否为数字类型，应该使用：typeof value === 'number'  
+# v-bind  
+v-bind是处理HTML中的标签属性的，例如<div></div>就是一个标签，<img>也是一个标签，我们绑定<img>上的src进行动态赋值。  
+```html
+<img v-bind:src="imgSrc" height="50px" width="100px"/>
+```
+简写  
+```html
+<img :src="imgSrc" height="50px" width="100px"/>
+```
+在实际工作中，我们主要使用一些逻辑来渲染不同的样式。  
+Vue的实例代码：  
+```js
+let app=new Vue({
+        el:"#app",
+        data:{
+            imgSrc:"http://7xjyw1.com1.z0.glb.clouddn.com/bbbb_20180818070432.png",
+            divClass:"classA",
+            isOk:false,
+            v_classA:"classA",
+            v_classA:"classB",
+             styleObj:{fontSize:"14px",color:"gray"}
+        }
+
+    });
+```
+- 直接绑定样式  
+```html
+<div :class="v_classA">直接绑定class</div>
+```
+- 条件绑定样式  
+```html
+<div :class="{classA:isOk,classB:!isOk}">绑定class条件判断</div>
+```
+*注意*classA和classB是样式不是vue里data中的变量  
+```html
+<div :class="isOk?v_classA:v_classA">4、绑定class中的三元表达式判断</div>
+```  
+*注意*和上面的区别
+- class数组
+```html
+<div :class="[v_classA,v_classA]">绑定class数组</div>  
+```
+- 绑定style  
+错误的写法。我经常犯得错  
+```html
+<div :style="font-size:v_fontSize;color:v_color">绑定style</div>
+```
+上面的错误示例有基础需要注意的。  
+vue中样式的绑定不能按照常规的html的style格式来书写，需要写成对象的形式，即（<div :style="{font-size:v_fontSize;color:v_color}">绑定style</div>）
+这样还是有问题的，vue对样式的属性不能加-的（算是vue的bug吧，无法解析），需要更改为驼峰似的命名即（<div :style="{fontSize:v_fontSize;color:v_color}">绑定style</div>）  
+正确的写法：  
+```html
+<div :style="{fontSize:v_fontSize,color:v_color}">绑定style</div>
+```
+当然也可以作为一个对象来绑定。  
+```html
+<div :style="styleObj">绑定style对象</div>
+```
+# v-pre  
+就是原样输出  
+```html
+<div id="app">
+    <div v-pre>{{message}}</div>
+</div>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            message:"jiang"
+        }
+    });
+</script>
+```
+如上面，他并不会将message的内容输出，而是直接在页面上显示{{message}}  
+# v-cloak  
+在vue渲染完指定的整个DOM后才进行显示。它必须和CSS样式一起使用，
+# v-once  
+在vue只渲染一次，当绑定的数据源再次发生变化时，他也不会变化。  
+```html
+<div id="app">
+    <div v-once>{{message}}</div>
+    <input type="text" v-model="message">
+    <div>{{message}}</div>
+</div>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            message:"jiang"
+        }
+    });
+</script>
+```
+上面div的内容就不会随文本框输入的值变化而变  
 # v-text  
 注意使用v-text的细节  
 ```html

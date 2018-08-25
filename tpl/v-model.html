@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body >
+<div id="app">
+    <p>start{{modelData}}end</p>
+    <input type="text" v-model="modelData" v-on:blur="test()"/>
+    <input type="text" v-model.lazy="modelData"/>
+    <input type="text" v-model.number="modelData"/>
+    <input type="text" v-model.trim="modelData"/>
+    <p>v-model.number</p>
+    <p>{{modelNumber}}</p>
+    <input type="text" v-model.number="modelNumber" v-on:blur="testLog()"/>
+</div>
+
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            modelData:"jiang",
+            modelNumber:0
+        },
+        methods:{
+            test(){
+                console.log(this.modelData==="3");
+            },
+            testLog(){
+                console.log(this.modelNumber instanceof Number);
+                console.log(this.modelNumber instanceof String);
+                console.log(this.modelNumber==="2");
+                console.log(isNaN(this.modelNumber));
+                console.log(typeof this.modelNumber=="number");
+                console.log(222);
+            }
+        }
+    });
+</script>
+</body>
+</html>
