@@ -266,6 +266,54 @@ binding:{
 ```
 [指令的实用场景](https://blog.csdn.net/baidu_31333625/article/details/70473839)  
 [自定义指令的详细开发](https://segmentfault.com/a/1190000012566413)   
+## Vue.extend  
+Vue.extend 返回的是一个“扩展实例构造器”,也就是预设了部分选项的Vue实例构造器。经常服务于Vue.component用来生成组件，可以简单理解为当在模板中遇到该组件名称作为标签的自定义元素时，
+会自动调用“扩展实例构造器”来生产组件实例，并挂载到自定义元素上。  
+- 自定义无参数标签  
+我们想象一个需求，需求是这样的，要在博客页面多处显示作者的网名，并在网名上直接有链接地址。我们希望在html中只需要写<author></author> ，这和自定义组件很像，但是他没有传递任何参数，只是个静态标签。  
+我们的Vue.extend该登场了，我们先用它来编写一个扩展实例构造器。代码如下：  
+```js
+let authorExpend=Vue.extend({
+        template:`<p><a :href="authorUrl">{{authorName}}</a></p>`,
+        data(){
+            return {
+                authorUrl:"http://baidu.com",
+                authorName:"jiang"
+            };
+        }
+    });
+```
+这时html中的标签还是不起作用的，因为扩展实例构造器是需要挂载的，我们再进行一次挂载。  
+```js
+new authorExpend().$mount("author");
+```
+这里可以是标签，class或id  
+个人觉得这个没什么用，这样的需求我们一般都是采用的组件开发。   
+# vue.set  
+其他功能都不重要，都可以有其他方式来实现，但是对数组的数据更新或长度变化，vue是检查不到变化的，所以dom也不会更新，这样就会出现视图和数据源的不一致。需要通过vue.set来解决。
+```html
+<div id="app">
+    <div>
+        <ul>
+            <li v-for="v in arr">{{v}}</li>
+        </ul>
+    </div>
+    <button onclick="update()">update</button>
+</div>
+<script>
+    function update(){
+//        outData.arr[1]="dddddddd";
+        Vue.set(app.arr,1,"ddddddddd");
+    }
+    let outData={
+        arr:["a","b","c"]
+    };
+    let app=new Vue({
+        el:"#app",
+        data:outData
+    });
+</script>
+```
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
 # 组件通信  
