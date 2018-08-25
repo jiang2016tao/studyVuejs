@@ -118,6 +118,97 @@ vue中样式的绑定不能按照常规的html的style格式来书写，需要�
                             <span>jiang</span>
                         </li>
 ```
+# Vue全局API  
+## vue.directive  
+*问题*  
+```html
+<div id="app">
+    <div>{{num}}</div>
+    <button @click="add">add</button>
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            num:10
+        },
+        methods:{
+            add:function() {
+                debugger
+                this.num++;
+            }
+        }
+    });
+</script>
+```
+这样写点击按钮，num会加1并在页面显示。完全符合预期。  
+```html
+<div id="app">
+    <div>{{num}}</div>
+    <button @click="add">add</button>
+</div>
+<script>
+    new Vue({
+        el:"#app",
+        data:{
+            num:10
+        },
+        methods:{
+            add:()=> {
+                debugger
+                this.num++;
+            }
+        }
+    });
+</script>
+```
+但是改用es6的箭头函数，就出现问题了。debugger发现this的指向变了，上面的this是Vue，而下面的确实window。  
+[this 指向详细解析（箭头函数）](https://www.cnblogs.com/dongcanliang/p/7054176.html)  
+作为方法的箭头函数this指向全局window对象，而普通函数则指向调用它的对象.所以在vue中使用箭头函数要注意this的指向  
+<font color="red">那这样在Vue里岂不是只能使用普通函数来写了，应该会有其他方法使用箭头函数吧</font>  
+箭头函数里面的 this 是一个常量，它继承自外围作用域  
+[代码重构_使用箭头函数精简你的 Vue 模块](http://imweb.io/topic/5848d21b9be501ba17b10a99)   
+自定义指令示例：
+```html
+<div id="app">
+    <div v-jiang="color">{{num}}</div>
+    <button @click="add">add</button>
+</div>
+<script>
+    Vue.directive("jiang",(el,binding)=>{
+        el.style.color=binding.value;
+    });
+    new Vue({
+        el:"#app",
+        data:{
+            num:10,
+            color:"red"
+        },
+        methods:{
+            add() {
+                this.num++;
+            }
+        }
+    });
+</script>
+```
+1.自定义指令传递三个参数  
+- el: 指令所绑定的元素，可以用来直接操作DOM。  
+- binding:  一个对象，包含指令的很多信息。  
+>```js
+binding:{
+    name:'指令名，不包括 v- 前缀。',
+    value:'指令的绑定值，例如：v-my-directive="1 + 1" 中，绑定值为 2。',
+    oldValue:'指令绑定的前一个值，仅在 update 和 componentUpdated 钩子中可用。无论值是否改变都可用。',
+    expression:"字符串形式的指令表达式。例如 v-my-directive="1 + 1" 中，表达式为 "1 + 1"",
+    arg："传给指令的参数，可选。例如 v-my-directive:foo 中，参数为 "foo"",
+    modifiers:"一个包含修饰符的对象。例如：v-my-directive.foo.bar 中，修饰符对象为 { foo: true, bar: true }。",
+    vnode:"Vue 编译生成的虚拟节点。",
+    oldVnode:"上一个虚拟节点"
+   }
+```
+
+- vnode: Vue编译生成的虚拟节点。  
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
 # 组件通信  
