@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+    <component :is="who"></component>
+    <button @click="change">switch</button>
+</div>
+<script>
+    let subTest={
+        template:`<div>sub……</div>`
+    };
+    let jiang3={
+        template:`
+            <div>
+                <p>局部组件3</p>
+            </div>
+        `,
+        components:{
+            subTest
+        }
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            who:"jiang3"
+        },
+        components:{
+            jiang3,
+            subTest
+        },
+        methods:{
+            change(){
+                if(this.who==="jiang3"){
+                    this.who="subTest";
+                }
+                else{
+                    this.who="jiang3";
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>

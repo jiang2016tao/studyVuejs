@@ -570,6 +570,81 @@ let app=new Vue({
 ```
 props:["msg"]里的声明必需和组件jiang3里的属性一致。这里将Vue里message数据赋值给了jiang3组件里msg属性  
 对于“-”，采用小驼峰写法。如：<jiang3 data-msg="message"></jiang3>,那么props:["dataMsg"]。  
+### 父子组件  
+```html
+<div id="app">
+    <jiang3></jiang3>
+</div>
+<script>
+    let subTest={
+        template:`<div>sub……</div>`
+    };
+    let jiang3={
+        template:`
+            <div>
+                <p>局部组件3</p>
+                <subTest></subTest>
+            </div>
+        `,
+        components:{
+            subTest
+        }
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            message:"jiang"
+        },
+        components:{
+            jiang3
+        }
+    });
+</script>
+```
+组件的命名组号不要和html标签重名，否则vue解析会有问题。（踩过的坑都知道）  
+### component标签  
+可以用来控制需要显示哪个组件，以前我好像想到用v-if条件来判断的.<component></component>标签是Vue框架自定义的标签，它的用途就是可以动态绑定我们的组件，根据数据的不同更换不同的组件。    
+```html
+<div id="app">
+    <component :is="who"></component>
+    <button @click="change">switch</button>
+</div>
+<script>
+    let subTest={
+        template:`<div>sub……</div>`
+    };
+    let jiang3={
+        template:`
+            <div>
+                <p>局部组件3</p>
+            </div>
+        `,
+        components:{
+            subTest
+        }
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            who:"jiang3"
+        },
+        components:{
+            jiang3,
+            subTest
+        },
+        methods:{
+            change(){
+                if(this.who==="jiang3"){
+                    this.who="subTest";
+                }
+                else{
+                    this.who="jiang3";
+                }
+            }
+        }
+    });
+</script>
+```
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
