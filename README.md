@@ -428,6 +428,57 @@ vue的声明周期有beforeCreate，created，beforeMount，mounted，beforeUpda
 > mounted ： 在这发起后端请求，拿回数据，配合路由钩子做一些事情  
 > beforeDestroy： 你确认删除XX吗？ destroyed ：当前组件已被删除，清空相关内容  
 *对于发送请求是放在created,还是放在mounted。这个要看请求前和请求后是否有对文档的操作，如果有就必需在mounted里；否则就任选一个*  
+*一个标准的工程项目中，会有多少个生命周期勾子吗？让我们来一起来盘点一下：*<code>很多我们后期学习</code>
+1.根组件实例：8个 (beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、beforeDestroy、destroyed)  
+2.组件实例：8个 (beforeCreate、created、beforeMount、mounted、beforeUpdate、updated、beforeDestroy、destroyed)  
+3.全局路由钩子：2个 (beforeEach、afterEach)  
+4.组件路由钩子：3个 (beforeRouteEnter、beforeRouteUpdate、beforeRouteLeave)  
+5.指令的周期： 5个 (bind、inserted、update、componentUpdated、unbind)  
+6.beforeRouteEnter的next所对应的周期  
+7.nextTick所对应的周期  
+[ vue生命周期探究（一）](https://segmentfault.com/a/1190000008879966#articleHeader10)  
+
+## template制作模板  
+模板的制作有4中方法:  
+1.直接在选项里使用  
+```html
+<div id="app"></div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        template:`
+            <div>这是选项模板</div>
+        `
+    });
+</script>
+```
+2.使用template标签*注意：标签名是固定的*  
+```html
+<div id="app"></div>
+<template id="template_2">
+    <div>这个template模板</div>
+</template>
+<script>
+    let app=new Vue({
+        el:"#app",
+        template:"#template_2"
+    });
+</script>
+```
+3.使用script标签*经实践，script的type可以不写或写任意值都可以*  
+```html
+<div id="app"></div>
+<script type="text/x-handlebars-template" id="template_3">
+    <div>这是script标签</div>
+</script>
+<script>
+    let app=new Vue({
+        el:"#app",
+        template:"#template_3"
+    });
+</script>
+```
+4.学习vue-cli的时候，在进行讲述  
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
