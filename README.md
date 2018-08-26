@@ -645,6 +645,29 @@ props:["msg"]里的声明必需和组件jiang3里的属性一致。这里将Vue�
     });
 </script>
 ```
+# vue 选项  
+## propsData   
+propsData 不是和属性有关，他用在全局扩展时进行传递数据。  
+```html
+<div>
+    <author></author>
+</div>
+<script>
+    let authorExpend=Vue.extend({
+        template:`<p><a :href="authorUrl">{{authorName}}</a></p>`,
+        data(){
+            return {
+            };
+        },
+        props:["authorUrl","authorName"]
+    });
+    new authorExpend({propsData:{authorUrl:"www.baidu.com",authorName:"jiang"}}).$mount("author");
+</script>
+```
+用propsData三步解决传值:  
+1.在全局扩展里加入props进行接收.props:["authorUrl","authorName"]  
+2.传递时用propsData进行传递.new authorExpend({propsData:{authorUrl:"www.baidu.com",authorName:"jiang"}}).$mount("author");  
+3.用插值的形式写入模板。template:`<p><a :href="authorUrl">{{authorName}}</a></p>`,  
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
