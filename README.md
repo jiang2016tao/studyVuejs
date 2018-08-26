@@ -316,7 +316,8 @@ new authorExpend().$mount("author");
 </script>
 ```
 <code>发现没：为什么是app.arr,而不是app.data.arr</code>这个应该要看vue是怎么实例化的  
-## vue的声明周期  
+## vue生命周期  
+[vue生命周期](https://juejin.im/post/5a3200f96fb9a0450a675c9a)  
 组件生命周期函数的定义：从组件被创建，到组件挂载到页面上运行，再到页面关闭组件被卸载，这三个阶段总是伴随着组件各种各样的事件，那么这些事件，统称为组件的生命周期函数！  
 - 生命周期的钩子函数：框架提供的函数，能够让开发人员的代码，参与到组件的生命周期中。也就是说，通过钩子函数，就可以控制组件的行为  
 - 注意：vue再执行过程中会自动调用生命周期钩子函数，我们只需要提供这些钩子函数即可  
@@ -326,7 +327,107 @@ vue的声明周期有beforeCreate，created，beforeMount，mounted，beforeUpda
 > - 说明：在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用  
 > - 注意：此时，无法获取 data中的数据、methods中的方法
 
-- beforeCreate
+- created  
+> - 说明：实例已经创建完成之后被调用。在这一步，实例已完成以下的配置：数据观测(data observer)，属性和方法的运算， watch/event 事件回调。然而，挂载阶段还没开始，$el 属性目前不可见。  
+> - 注意：这是一个常用的生命周期，可以调用methods中的方法、改变data中的数据,并且修改可以通过vue的响应式绑定体现在页面上、获取computed中的计算属性等等。  
+> - 使用场景：发送请求获取数据(但是也有很多人实在mounted中发送请求来改变data中的数据的，至于使用那种需要估量).值得注意的是，这个周期中是没有什么方法来对实例化过程进行拦截的。
+因此假如有某些数据必须获取才允许进入页面的话，并不适合在这个页面发请求。建议在组件路由勾子beforeRouteEnter中来完成。  
+
+- beforeMount  
+> - 说明：在挂载开始之前被调用  
+
+- mounted  
+> - 此时，vue实例已经挂载到页面中，可以获取到el中的DOM元素，进行DOM操作  
+- beforeUpdate  
+> - 说明：数据更新时调用，发生在虚拟 DOM 重新渲染和打补丁之前。你可以在这个钩子中进一步地更改状态，这不会触发附加的重渲染过程。  
+- updated  
+> - 说明：组件 DOM 已经更新，所以你现在可以执行依赖于 DOM 的操作。  
+- beforeDestroy  
+> - 说明：实例销毁之前调用。在这一步，实例仍然完全可用。  
+> - 使用场景：实例销毁之前，执行清理任务，比如：清除定时器等  
+- destroyed  
+> - 说明：Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。  
+[vue生命周期代码示例](https://segmentfault.com/a/1190000008010666)  
+```html
+<div id="app">
+    <div id="message_div">{{message}}</div>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            message:"jiang"
+        },
+
+        beforeCreate: function () {
+            console.group('beforeCreate 创建前状态===============》');
+            console.log("%c%s", "color:red" , "el     : " + this.$el); //undefined
+            console.log("%c%s", "color:red","data   : " + this.$data); //undefined
+            console.log("%c%s", "color:red","message: " + this.message)
+        },
+        created: function () {
+            console.group('created 创建完毕状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el); //undefined
+            console.log("%c%s", "color:red","data   : " + this.$data); //已被初始化
+            console.log("%c%s", "color:red","message: " + this.message); //已被初始化
+        },
+        beforeMount: function () {
+            console.group('beforeMount 挂载前状态===============》');
+            console.log("%c%s", "color:red","el     : " + (this.$el)); //已被初始化
+            console.log(this.$el);
+            console.log("%c%s", "color:red","data   : " + this.$data); //已被初始化
+            console.log("%c%s", "color:red","message: " + this.message); //已被初始化
+        },
+        mounted: function () {
+            console.group('mounted 挂载结束状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el); //已被初始化
+            console.log(this.$el);
+            console.log("%c%s", "color:red","data   : " + this.$data); //已被初始化
+            console.log("%c%s", "color:red","message: " + this.message); //已被初始化
+        },
+        beforeUpdate: function () {
+            console.group('beforeUpdate 更新前状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el);
+            console.log("%c%s", "color:red","data   : " + this.$data);
+            console.log("%c%s", "color:red","message: " + this.message);
+        },
+        updated: function () {
+            console.group('updated 更新完成状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el);
+            console.log("%c%s", "color:red","data   : " + this.$data);
+            console.log("%c%s", "color:red","message: " + this.message);
+        },
+        beforeDestroy: function () {
+            console.group('beforeDestroy 销毁前状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el);
+            console.log("%c%s", "color:red","data   : " + this.$data);
+            console.log("%c%s", "color:red","message: " + this.message);
+        },
+        destroyed: function () {
+            console.group('destroyed 销毁完成状态===============》');
+            console.log("%c%s", "color:red","el     : " + this.$el);
+            console.log(this.$el);
+            console.log("%c%s", "color:red","data   : " + this.$data);
+            console.log("%c%s", "color:red","message: " + this.message)
+        }
+
+    });
+</script>
+```
+运行上面的代码你会发现  
+![image](../wikiImg/vue_1.png)  
+从图中可以看出加载完页面，会经历4个钩子函数beforeCreate ，created ，beforeMount ，mounted 。   
+在beforeCreate中无法获取 data中的数据、methods中的方法和模板的el，在created可以获取data和method的方法，但是模板的el还是无法获取（当然对文档的节点是不可能操作的）;
+在beforeMount 中模板已经可以看到了，只是对于数据部分的渲染还没有；在mounted 才将Vue里data数据渲染好。  
+*vue的生命周期有这些钩子函数，那我们应该如何使用了*  
+> beforeCreate:可以在次加loading效果，但是有的是在created钩子函数里加loading效果  
+> created :在这结束loading(我觉得结束loading效果可以放到mounted钩子函数做比较好)，还做一些初始化，实现函数自执行  
+> mounted ： 在这发起后端请求，拿回数据，配合路由钩子做一些事情  
+> beforeDestroy： 你确认删除XX吗？ destroyed ：当前组件已被删除，清空相关内容  
+*对于发送请求是放在created,还是放在mounted。这个要看请求前和请求后是否有对文档的操作，如果有就必需在mounted里；否则就任选一个*  
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
