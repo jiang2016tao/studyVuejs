@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+    <div>
+        <div>{{num}}</div>
+        <button @click="add(2)">add</button>
+    </div>
+</div>
+<button onclick="app.add(4)" >外部调用构造器里的方法</button>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(num){
+                this.num+=num;
+            }
+        }
+    });
+</script>
+</body>
+</html>

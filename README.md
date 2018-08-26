@@ -668,6 +668,73 @@ propsData 不是和属性有关，他用在全局扩展时进行传递数据。
 1.在全局扩展里加入props进行接收.props:["authorUrl","authorName"]  
 2.传递时用propsData进行传递.new authorExpend({propsData:{authorUrl:"www.baidu.com",authorName:"jiang"}}).$mount("author");  
 3.用插值的形式写入模板。template:`<p><a :href="authorUrl">{{authorName}}</a></p>`,  
+## computed  
+(这个常用)computed 的作用主要是对原数据进行改造输出。改造输出：包括格式的编辑，大小写转换，顺序重排，添加符号……。  
+## methods  
+- methods中参数的传递  
+使用方法和正常的javascript传递参数的方法一样，分为两部：  
+>1.在methods的方法中进行声明，比如我们给add方法加上一个num参数，就要写出add:function(num){}  
+>2.调用方法时直接传递，比如我们要传递2这个参数，我们在button上就直接可以写。<button @click=”add(2)”></button>.  
+
+```html
+<div id="app">
+    <div>
+        <div>{{num}}</div>
+        <button @click="add(2)">add</button>
+    </div>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(num){
+                this.num+=num;
+            }
+        }
+    });
+</script>
+```
+- methods中的$event参数  
+传递的$event参数都是关于你点击鼠标的一些事件和属性。我们先看看传递的方法。  
+传递：<button @click=”add(2,$event)”>add</button> 。  
+可以自己试着打印出来看看（我记得angular也是这样的）  
+- native  给组件绑定构造器里的原生事件。  
+在实际开发中经常需要把某个按钮封装成组件，然后反复使用，如何让组件调用构造器里的方法，而不是组件里的方法。就需要用到我们的.native修饰器了。  
+```html
+<div id="app">
+        <div>{{num}}</div>
+        <jiang @click.native="add(2)"></jiang>
+    </div>
+    <script>
+        let jiang={
+            template:"<button>jiang</button>"
+        };
+        let app=new Vue({
+            el:"#app",
+            data:{
+                num:1
+            },
+            methods:{
+                add(num){
+                    this.num+=num;
+                },
+
+            },
+            components:{
+                jiang
+            }
+        });
+    </script>
+```
+- 作用域外部调用构造器里的方法  
+这种不经常使用，如果你出现了这种情况，说明你的代码组织不够好。  
+```html
+<button onclick="app.add(4)" >外部调用构造器里的方法</button>
+```
+
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
