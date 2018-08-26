@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+    <jiang></jiang>
+</div>
+<script>
+    Vue.component("jiang",{
+        template:`<div>全局组件</div>`
+    });
+    Vue.component("jiang2",{
+        template:`<div>全局组件2</div>`
+    });
+    let app=new Vue({
+        el:"#app"
+    });
+</script>
+</body>
+</html>

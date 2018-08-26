@@ -479,6 +479,70 @@ vue的声明周期有beforeCreate，created，beforeMount，mounted，beforeUpda
 </script>
 ```
 4.学习vue-cli的时候，在进行讲述  
+## component 组件  
+组件就是自定义标签,组件必需要在Vue实例化里才会被正确使用，不再vue实例化内是无效的  
+1.全局注册组件  
+该组件在任何Vue实例化内都可以使用  
+```html
+<div id="app">
+    <jiang></jiang>
+</div>
+<script>
+    Vue.component("jiang",{
+        template:`<div>全局组件</div>`
+    });
+    Vue.component("jiang2",{
+        template:`<div>全局组件2</div>`
+    });
+    let app=new Vue({
+        el:"#app"
+    });
+</script>
+```
+2.局部组件  
+该组件只能在指定的Vue实例里使用  
+```html
+<div id="app">
+    <jiang3></jiang3>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        components:{
+            "jiang3":{
+                template:`<div>局部组件3</div>`
+            },
+            "jiang4":{
+                template:`<div>局部组件4</div>`
+            }
+        }
+    });
+</script>
+```
+*注意：局部和全局的单词有区别，全局是component，局部是components。*  
+Vue.component一次只能注册一个全局组件，注册多个，必需要用多次。  
+```js
+Vue.component("jiang",{
+        template:`<div>全局组件</div>`
+    });
+    Vue.component("jiang2",{
+        template:`<div>全局组件2</div>`
+    });
+```
+局部的components可以直接注册多个  
+```js
+let app=new Vue({
+        el:"#app",
+        components:{
+            "jiang3":{
+                template:`<div>局部组件3</div>`
+            },
+            "jiang4":{
+                template:`<div>局部组件4</div>`
+            }
+        }
+    });
+```
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
