@@ -290,7 +290,8 @@ new authorExpend().$mount("author");
 这里可以是标签，class或id  
 个人觉得这个没什么用，这样的需求我们一般都是采用的组件开发。   
 # vue.set  
-其他功能都不重要，都可以有其他方式来实现，但是对数组的数据更新或长度变化，vue是检查不到变化的，所以dom也不会更新，这样就会出现视图和数据源的不一致。需要通过vue.set来解决。
+其他功能都不重要，都可以有其他方式来实现，但是对数组的数据更新或长度变化，vue是检查不到变化的，所以dom也不会更新，这样就会出现视图和数据源的不一致。需要通过vue.set来解决。  
+可以查看下面数据不更新（#vue_set）  
 ```html
 <div id="app">
     <div>
@@ -314,6 +315,8 @@ new authorExpend().$mount("author");
     });
 </script>
 ```
+<code>发现没：为什么是app.arr,而不是app.data.arr</code>这个应该要看vue是怎么实例化的  
+<a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
 # 组件通信  
