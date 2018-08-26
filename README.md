@@ -289,7 +289,7 @@ new authorExpend().$mount("author");
 ```
 这里可以是标签，class或id  
 个人觉得这个没什么用，这样的需求我们一般都是采用的组件开发。   
-# vue.set  
+## vue.set  
 其他功能都不重要，都可以有其他方式来实现，但是对数组的数据更新或长度变化，vue是检查不到变化的，所以dom也不会更新，这样就会出现视图和数据源的不一致。需要通过vue.set来解决。  
 可以查看下面数据不更新（#vue_set）  
 ```html
@@ -316,6 +316,17 @@ new authorExpend().$mount("author");
 </script>
 ```
 <code>发现没：为什么是app.arr,而不是app.data.arr</code>这个应该要看vue是怎么实例化的  
+## vue的声明周期  
+组件生命周期函数的定义：从组件被创建，到组件挂载到页面上运行，再到页面关闭组件被卸载，这三个阶段总是伴随着组件各种各样的事件，那么这些事件，统称为组件的生命周期函数！  
+- 生命周期的钩子函数：框架提供的函数，能够让开发人员的代码，参与到组件的生命周期中。也就是说，通过钩子函数，就可以控制组件的行为  
+- 注意：vue再执行过程中会自动调用生命周期钩子函数，我们只需要提供这些钩子函数即可  
+- 注意：钩子函数的名称都是固定的！！！  
+vue的声明周期有beforeCreate，created，beforeMount，mounted，beforeUpdate，updated，beforeDestroy，destroyed。还有activated和deactivated，这10个钩子函数.  
+- beforeCreate  
+> - 说明：在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用  
+- 注意：此时，无法获取 data中的数据、methods中的方法
+
+- beforeCreate
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  
