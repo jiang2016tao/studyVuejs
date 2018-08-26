@@ -324,7 +324,7 @@ new authorExpend().$mount("author");
 vue的声明周期有beforeCreate，created，beforeMount，mounted，beforeUpdate，updated，beforeDestroy，destroyed。还有activated和deactivated，这10个钩子函数.  
 - beforeCreate  
 > - 说明：在实例初始化之后，数据观测 (data observer) 和 event/watcher 事件配置之前被调用  
-- 注意：此时，无法获取 data中的数据、methods中的方法
+> - 注意：此时，无法获取 data中的数据、methods中的方法
 
 - beforeCreate
 <a name="vue_set"></a>
