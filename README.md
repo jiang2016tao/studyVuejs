@@ -347,6 +347,7 @@ vue的声明周期有beforeCreate，created，beforeMount，mounted，beforeUpda
 > - 使用场景：实例销毁之前，执行清理任务，比如：清除定时器等  
 - destroyed  
 > - 说明：Vue 实例销毁后调用。调用后，Vue 实例指示的所有东西都会解绑定，所有的事件监听器会被移除，所有的子实例也会被销毁。  
+
 [vue生命周期代码示例](https://segmentfault.com/a/1190000008010666)  
 ```html
 <div id="app">
@@ -418,7 +419,7 @@ vue的声明周期有beforeCreate，created，beforeMount，mounted，beforeUpda
 </script>
 ```
 运行上面的代码你会发现  
-![image](../wikiImg/vue_1.png)  
+![image](./wikiImg/vue_1.png)  
 从图中可以看出加载完页面，会经历4个钩子函数beforeCreate ，created ，beforeMount ，mounted 。   
 在beforeCreate中无法获取 data中的数据、methods中的方法和模板的el，在created可以获取data和method的方法，但是模板的el还是无法获取（当然对文档的节点是不可能操作的）;
 在beforeMount 中模板已经可以看到了，只是对于数据部分的渲染还没有；在mounted 才将Vue里data数据渲染好。  
@@ -543,6 +544,32 @@ let app=new Vue({
         }
     });
 ```
+*指令与组件的区别：*
+> 组件注册的是一个标签，而指令注册的是已有标签里的一个属性。在实际开发中我们还是用组件比较多，指令用的比较少。因为指令看起来封装的没那么好，这只是个人观点。  
+
+### 属性props
+主要是获取自定义标签上的属性值  
+```html
+<div id="app">
+    <jiang3 :msg="message"></jiang3>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            message:"jiang"
+        },
+        components:{
+            "jiang3":{
+                template:`<div>局部组件3{{msg}}</div>`,
+                props:["msg"]
+            }
+        }
+    });
+</script>
+```
+props:["msg"]里的声明必需和组件jiang3里的属性一致。这里将Vue里message数据赋值给了jiang3组件里msg属性  
+对于“-”，采用小驼峰写法。如：<jiang3 data-msg="message"></jiang3>,那么props:["dataMsg"]。  
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
 参考：http://blog.csdn.net/github_38771368/article/details/77155939  

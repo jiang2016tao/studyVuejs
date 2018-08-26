@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+    <jiang3 :msg="message"></jiang3>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            message:"jiang"
+        },
+        components:{
+            "jiang3":{
+                template:`<div>局部组件3{{msg}}</div>`,
+                props:["msg"]
+            }
+        }
+    });
+</script>
+</body>
+</html>
