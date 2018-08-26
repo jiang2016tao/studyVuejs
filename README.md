@@ -978,6 +978,7 @@ delimiters的作用是改变我们插值的符号。Vue默认的插值是双大�
 <div id="app">
     <div>${message}</div>
 </div>
+
 <script>
     var app=new Vue({
         el:"#app",
@@ -989,7 +990,45 @@ delimiters的作用是改变我们插值的符号。Vue默认的插值是双大�
 </script>
 ```
 现在我们的插值形式就变成了${}。  
-
+# vue实例方法  
+虽然有些前面已经有了，但是这里还是写一下  
+## $mount  
+$mount方法是用来挂载我们的扩展的  
+```html
+<div id="app"></div>
+<script>
+    let authorExpend=Vue.extend({
+        template:`<p><a :href="authorUrl">{{authorName}}</a></p>`,
+        data(){
+            return {
+                authorUrl:"http://baidu.com",
+                authorName:"jiang"
+            };
+        }
+    });
+    new authorExpend().$mount("#app");
+</script>
+```
+## $destroy  
+用$destroy()进行卸载。
+```html
+<p><button onclick="destroy()">卸载</button></p>
+```
+```js
+function destroy(){
+        vm.$destroy();
+    }
+```
+执行结果如图:  
+![image](./wikiImg/vue_6.png)  
+## $forceUpdate  
+$forceUpdate() 更新方法  
+## $nextTick()  
+当Vue构造器里的data值被修改完成后会调用这个方法，也相当于一个钩子函数吧，和构造器里的updated生命周期很像。  
+这个个人觉得还是很有用的，项目中就涉及到它。  
+这个更多的是用在获取dom节点更新后的数据。[$nextTick](https://zhuanlan.zhihu.com/p/26724001)  
+Vue 实现响应式并不是数据发生变化之后 DOM 立即变化，而是按一定的策略进行 DOM 的更新。  
+$nextTick 是在下次 DOM 更新循环结束之后执行延迟回调，在修改数据之后使用 $nextTick，则可以在回调中获取更新后的 DOM  
 
 
 <a name="vue_set"></a>
