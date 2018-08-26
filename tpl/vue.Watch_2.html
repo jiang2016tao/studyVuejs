@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{temprater}}</p>
+    <p>{{tempraterDec}}</p>
+    <div>
+        <button @click="add">升温</button>
+        <button @click="mus">降温</button>
+    </div>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            temprater:10,
+            tempraterDec:""
+        },
+        methods:{
+            add(){
+                this.temprater+=5;
+            },
+            mus(){
+                this.temprater-=5;
+            }
+        }
+    });
+    app.$watch("temprater",function(newVal,oldVal){
+        if(newVal>26){
+            this.tempraterDec="穿断续";
+        }
+        else if(newVal>=10 && newVal<=26){
+            this.tempraterDec="穿甲乙";
+        }
+        else{
+            this.tempraterDec="穿棉袄";
+        }
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{num}}</p>
+    <div>
+        <button @click="add">add</button>
+    </div>
+</div>
+<script type="text/javascript">
+    Vue.mixin({
+        updated:function(){
+            console.log('我是全局被混入的');
+        }
+    });
+    var addLog={
+        updated:function(){
+            console.log("数据发生变动，变动后的数据是 "+this.num);
+        }
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                this.num++;
+            }
+        },
+        updated(){
+            console.log("我是构造函数的");
+        },
+        mixins:[addLog]
+    });
+</script>
+</body>
+</html>

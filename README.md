@@ -734,6 +734,169 @@ propsData 不是和属性有关，他用在全局扩展时进行传递数据。
 ```html
 <button onclick="app.add(4)" >外部调用构造器里的方法</button>
 ```
+## Watch   
+数据变化的监控经常使用  
+```html
+<div id="app">
+    <p>{{temprater}}</p>
+    <p>{{tempraterDec}}</p>
+    <div>
+        <button @click="add">升温</button>
+        <button @click="mus">降温</button>
+    </div>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            temprater:10,
+            tempraterDec:""
+        },
+        methods:{
+            add(){
+                this.temprater+=5;
+            },
+            mus(){
+                this.temprater-=5;
+            }
+        },
+        watch:{
+            temprater(){
+                if(this.temprater>26){
+                    this.tempraterDec="穿断续";
+                }
+                else if(this.temprater>=10 && this.temprater<=26){
+                    this.tempraterDec="穿甲乙";
+                }
+                else{
+                    this.tempraterDec="穿棉袄";
+                }
+            }
+        }
+    });
+</script>
+```
+这里的watch在组件首次加载是不会执行的，只有在页面操作中当数据变化的时候才会执行。  
+有些时候我们会用实例属性的形式来写watch监控。也就是把我们watch卸载构造器的外部，这样的好处就是降低我们程序的耦合度，使程序变的灵活。  
+```html
+<div id="app">
+    <p>{{temprater}}</p>
+    <p>{{tempraterDec}}</p>
+    <div>
+        <button @click="add">升温</button>
+        <button @click="mus">降温</button>
+    </div>
+</div>
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            temprater:10,
+            tempraterDec:""
+        },
+        methods:{
+            add(){
+                this.temprater+=5;
+            },
+            mus(){
+                this.temprater-=5;
+            }
+        }
+    });
+    app.$watch("temprater",function(newVal,oldVal){
+        if(newVal>26){
+            this.tempraterDec="穿断续";
+        }
+        else if(newVal>=10 && newVal<=26){
+            this.tempraterDec="穿甲乙";
+        }
+        else{
+            this.tempraterDec="穿棉袄";
+        }
+    });
+</script>
+```
+*watch 和 computed区别*  
+>首先它们都是以Vue的依赖追踪机制为基础的，它们的共同点是：都是希望在依赖数据发生改变的时候，被依赖的数据根据预先定义好的函数，发生“自动”的变化  
+>1.watch擅长处理的场景：一个数据影响多个数据  
+>2.computed擅长处理的场景：一个数据受多个数据影响  
+>[watch与computed区别](https://www.jb51.net/article/120073.htm)  
+
+## Mixins  
+Mixins一般有两种用途：  
+>1.在你已经写好了构造器后，需要增加方法或者临时的活动时使用的方法，这时用混入会减少源代码的污染。  
+>>例如，构造函数已经写好了，需求变动不希望破坏原有已写好的构造函数。或者临时加个商品促销活动等场景。  
+>2.很多地方都会用到的公用方法，用混入的方法可以减少代码量，实现代码重用。  
+```html
+<div id="app">
+    <p>{{num}}</p>
+    <div>
+        <button @click="add">add</button>
+    </div>
+</div>
+<script type="text/javascript">
+    var addLog={
+        updated:function(){
+            console.log("数据发生变动，变动后的数据是 "+this.num);
+        }
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                this.num++;
+            }
+        },
+        mixins:[addLog]
+    });
+</script>
+```
+这样数据更新完成后都会在控制台打印一条信息。如图：  
+![image](./wikiImg/vue_2.png)  
+我们还可以通过全局进行混入，并且他们还有执行的顺序  
+```html
+<div id="app">
+    <p>{{num}}</p>
+    <div>
+        <button @click="add">add</button>
+    </div>
+</div>
+<script type="text/javascript">
+    Vue.mixin({
+        updated:function(){
+            console.log('我是全局被混入的');
+        }
+    });
+    var addLog={
+        updated:function(){
+            console.log("数据发生变动，变动后的数据是 "+this.num);
+        }
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                this.num++;
+            }
+        },
+        updated(){
+            console.log("我是构造函数的");
+        },
+        mixins:[addLog]
+    });
+</script>
+```
+执行结果如图：  
+![image](./wikiImg/vue_3.png)  
+从图可以看出，全局混入的最先执行，然后是混入的，最后是构造函数的。  
+-既然可以全局混入，那么每个组件（或vue实例）在执行时都会先执行全局混入的函数，我在想loading效果是不是全局混入在created函数或beforCreate函数里-  
+
 
 <a name="vue_set"></a>
 # vue中修改了数据但视图无法更新的情况  
