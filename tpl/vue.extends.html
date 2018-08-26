@@ -13,19 +13,15 @@
     </div>
 </div>
 <script type="text/javascript">
-    Vue.mixin({
-        updated:function(){
-            console.log('我是全局被混入的');
-        },methods:{
-            add(){
-                console.log("我是扩展函数的方法");
-            }
-        }
-    });
     var addLog={
         updated:function(){
             console.log("数据发生变动，变动后的数据是 "+this.num);
-        }
+        },
+        methods:{
+            add(){
+                console.log("我是扩展函数的方法");
+            }
+        },
     };
     let app=new Vue({
         el:"#app",
@@ -34,13 +30,14 @@
         },
         methods:{
             add(){
+                console.log("我是构造函数的方法");
                 this.num++;
             }
         },
         updated(){
             console.log("我是构造函数的");
         },
-        mixins:[addLog]
+        extends:addLog
     });
 </script>
 </body>

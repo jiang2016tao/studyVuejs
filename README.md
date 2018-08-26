@@ -826,6 +826,7 @@ propsData 不是和属性有关，他用在全局扩展时进行传递数据。
 Mixins一般有两种用途：  
 >1.在你已经写好了构造器后，需要增加方法或者临时的活动时使用的方法，这时用混入会减少源代码的污染。  
 >>例如，构造函数已经写好了，需求变动不希望破坏原有已写好的构造函数。或者临时加个商品促销活动等场景。  
+
 >2.很多地方都会用到的公用方法，用混入的方法可以减少代码量，实现代码重用。  
 ```html
 <div id="app">
@@ -896,6 +897,99 @@ Mixins一般有两种用途：
 ![image](./wikiImg/vue_3.png)  
 从图可以看出，全局混入的最先执行，然后是混入的，最后是构造函数的。  
 -既然可以全局混入，那么每个组件（或vue实例）在执行时都会先执行全局混入的函数，我在想loading效果是不是全局混入在created函数或beforCreate函数里-  
+## extends  
+extends 和 mixins有点类似  
+```html
+<div id="app">
+    <p>{{num}}</p>
+    <div>
+        <button @click="add">add</button>
+    </div>
+</div>
+<script type="text/javascript">
+    var addLog={
+        updated:function(){
+            console.log("数据发生变动，变动后的数据是 "+this.num);
+        }
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                this.num++;
+            }
+        },
+        updated(){
+            console.log("我是构造函数的");
+        },
+        extends:addLog
+    });
+</script>
+```
+执行结果如图  
+![image](./wikiImg/vue_4.png)  
+从图中可以看出扩展的生命周期updated先执行  
+```html
+<div id="app">
+    <p>{{num}}</p>
+    <div>
+        <button @click="add">add</button>
+    </div>
+</div>
+<script type="text/javascript">
+    var addLog={
+        updated:function(){
+            console.log("数据发生变动，变动后的数据是 "+this.num);
+        },
+        methods:{
+            add(){
+                console.log("我是扩展函数的方法");
+            }
+        },
+    };
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                console.log("我是构造函数的方法");
+                this.num++;
+            }
+        },
+        updated(){
+            console.log("我是构造函数的");
+        },
+        extends:addLog
+    });
+</script>
+```
+执行结果如图:  
+![image](./wikiImg/vue_5.png)  
+从图中可以看出，扩展的方法里没有执行，那是因为扩展的方法名相同，也就是说同一方法优先执行构造的。mixins也是这样的，可以自己试试  
+
+## delimiters   
+delimiters的作用是改变我们插值的符号。Vue默认的插值是双大括号{{}}。但有时我们会有需求更改这个插值的形式。  
+```html
+<div id="app">
+    <div>${message}</div>
+</div>
+<script>
+    var app=new Vue({
+        el:"#app",
+        data:{
+            message:"jiang"
+        },
+        delimiters:['${','}']
+    });
+</script>
+```
+现在我们的插值形式就变成了${}。  
+
 
 
 <a name="vue_set"></a>
