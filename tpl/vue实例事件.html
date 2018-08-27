@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://unpkg.com/vue"></script>
+</head>
+<body>
+<div id="app">
+    <p>{{num}}</p>
+    <p>
+        <button @click="add">add</button>
+    </p>
+    <p>
+        <button @click="sendMsg">sendMsg</button>
+    </p>
+    <!--<p>
+        <button @click="reduce">reduce</button>
+    </p>-->
+</div>
+
+<div id="app2">
+    <p>{{msg}}</p>
+</div>
+<p>
+    <button onclick="reduce()">reduce</button>
+</p>
+<p>
+    <button onclick="onceClick()">onceClick</button>
+</p>
+<script>
+    let bus=new Vue();
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                this.num++;
+            },
+            sendMsg(){
+                console.log(1);
+                bus.$emit("getApp1",this.num);
+            }
+        }
+    });
+    app.$on("reduce",function(){
+        this.num--;
+    });
+    app.$once("onceClick",function(){
+        alert("once");
+    });
+    function reduce(){
+        app.$emit("reduce");
+    }
+
+    function onceClick(){
+        app.$emit("onceClick");
+    }
+
+    let app2=new Vue({
+        el:"#app2",
+        data:{
+            msg:"app2"
+        },
+        created(){
+            let self=this;
+            bus.$on("getApp1",(num)=>{//注意使用箭头函数和不适用箭头函数的this区别
+                console.log(2);
+                this.msg=num;
+            })
+        }
+    });
+</script>
+</body>
+</html>

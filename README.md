@@ -1029,6 +1029,144 @@ $forceUpdate() 更新方法
 这个更多的是用在获取dom节点更新后的数据。[$nextTick](https://zhuanlan.zhihu.com/p/26724001)  
 Vue 实现响应式并不是数据发生变化之后 DOM 立即变化，而是按一定的策略进行 DOM 的更新。  
 $nextTick 是在下次 DOM 更新循环结束之后执行延迟回调，在修改数据之后使用 $nextTick，则可以在回调中获取更新后的 DOM  
+# vue实例事件   
+$on 在构造器外部添加自定义事件。  
+```js
+app.$on("reduce",function(){
+        this.num--;
+    });
+```
+$on接收两个参数，第一个参数是调用时的事件名称，第二个参数是一个匿名方法。  
+如果按钮在作用域外部，可以利用$emit来执行。  
+```js
+function reduce(){
+        app.$emit("reduce");
+    }
+```
+自定义的事件是没法在作用域里像methods里的方法那样使用的，如下面的代码就是错误的示例：  
+```html
+<div id="app">
+    <p>{{num}}</p>
+    <p>
+        <button @click="add">add</button>
+    </p>
+    <p>
+        <button @click="reduce">reduce</button>
+    </p>
+</div>
+<!--<p>-->
+    <!--<button onclick="reduce()">reduce</button>-->
+<!--</p>-->
+<script>
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                this.num++;
+            }
+        }
+    });
+    app.$on("reduce",function(){
+        this.num--;
+    });
+//    function reduce(){
+//        app.$emit("reduce");
+//    }
+</script>
+```
+$once执行一次的事件  
+```js
+app.$once("onceClick",function(){
+        alert("once");
+    });
+```
+调用和$on一样使用  
+$off关闭事件  
+```js
+app.$off('reduce');
+```
+
+## 父子组件之间的通信  
+### 父组件向子组件通信  
+父组件是使用 props 传递数据给子组件  
+在父组件中   
+```html
+<high-chart-data-table :metricDatas="graphData.graphMetrics" :granularity="granularity"></high-chart-data-table>
+```
+可以知道我们传了graphData.graphMetrics和granularity给子组件了。子组件需要在自己的构造函数里声明props属性来接收就可以了。  
+```js
+props:['metricDatas','granularity'],
+```
+这样子组件就可以使用父组件传过来的数据了。   
+### 子组件向父组件通信  
+首先，要在父组件里监听一个事件  
+```html
+<metric-aside @listenerToTagEvent="tagEvent"></metric-aside>
+```
+子组件在特定交互情况下，触发事件，传递消息通信  
+```js
+tagClick(tagId){
+                this.asideShow=false;
+                this.selectTag=tagId;
+                this.$emit('listenerToTagEvent',tagId)
+            }
+```
+
+## 两个非父子组件之间的通信  
+在简单的场景下，使用一个空的 Vue 实例作为中央事件总线(*那复杂场景又该如何使用呢？*)：  
+```html
+<div id="app">
+    <p>{{num}}</p>
+    <p>
+        <button @click="add">add</button>
+    </p>
+    <p>
+        <button @click="sendMsg">sendMsg</button>
+    </p>
+</div>
+
+<div id="app2">
+    <p>{{msg}}</p>
+</div>
+<p>
+    <button onclick="reduce()">reduce</button>
+</p>
+<script>
+    let bus=new Vue();
+    let app=new Vue({
+        el:"#app",
+        data:{
+            num:1
+        },
+        methods:{
+            add(){
+                this.num++;
+            },
+            sendMsg(){
+                console.log(1);
+                bus.$emit("getApp1",this.num);
+            }
+        }
+    });
+
+    let app2=new Vue({
+        el:"#app2",
+        data:{
+            msg:"app2"
+        },
+        created(){
+            let self=this;
+            bus.$on("getApp1",function(num){
+                console.log(2);
+                self.msg=num;
+            })
+        }
+    });
+</script>
+```
 
 
 <a name="vue_set"></a>
