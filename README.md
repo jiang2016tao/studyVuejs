@@ -729,6 +729,7 @@ propsData 不是和属性有关，他用在全局扩展时进行传递数据。
         });
     </script>
 ```
+*事件的修饰符有很多，可以参考官网的说明。[事件的修饰符](https://cn.vuejs.org/v2/guide/events.html#%E4%BA%8B%E4%BB%B6%E5%A4%84%E7%90%86%E6%96%B9%E6%B3%95)*  
 - 作用域外部调用构造器里的方法  
 这种不经常使用，如果你出现了这种情况，说明你的代码组织不够好。  
 ```html
@@ -1167,6 +1168,9 @@ tagClick(tagId){
     });
 </script>
 ```
+# slot  
+[slot内容分发](https://blog.csdn.net/sinat_17775997/article/details/52484072)  
+
 
 
 <a name="vue_set"></a>
