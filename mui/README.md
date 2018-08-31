@@ -159,4 +159,33 @@ routes: [
 ```html
 <p v-if="$route.query.userName">{{$route.query.userName}}</p>
 ```
+# 单页面多路由操作  
+在mutilRouter.vue里添加上三个路由标签  
+```html
+<div class="hello">
+    <P>{{msg}}</P>
+    <router-view name="left"/>
+    <router-view />
+    <router-view name="right"/>
+  </div>
+```
+然后在路由配置中配置：  
+```js
+{
+      path:"/mutilRouter",
+      component:MutilRouter,
+      children:[
+        {
+          path:"san",
+          components:{
+            default:Hi1,
+            left:Left,
+            right:Right
+          }
+        }
+      ]
+
+    }
+```
+*注意使用的是components而不是component（我第一次就犯这个错了），这里的left和right与router-link标签里的name需要保持一致*  
 
