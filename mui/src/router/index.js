@@ -7,6 +7,7 @@ import Hi2 from "@/components/Hi2"
 import MutilRouter from "@/components/mutilRouter"
 import Left from "@/components/left"
 import Right from "@/components/right"
+import Hi3 from "@/components/Hi3"
 
 Vue.use(Router)
 
@@ -41,6 +42,15 @@ export default new Router({
         }
       ]
 
+    },{
+      path: '/hi3/:name/:id(\\d+)',
+      component: Hi3
+    },{
+      path:"/home",
+      redirect:"/"
+    },{
+      path:"/goHi3/:name/:id(\\d+)",
+      redirect:"/hi3/:name/:id(\\d+)"
     }
   ]
 })

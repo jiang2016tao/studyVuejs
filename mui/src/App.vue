@@ -7,7 +7,10 @@
     <router-link :to="{name:'hi2',params:{userName:'jiang'}}">hi2_param</router-link> |
     <router-link :to="{path:'/hi2?userName=jiangPath'}">hi2_param_path</router-link> |
     <router-link to="/mutilRouter">mutilRouter</router-link> |
-    <router-link to="/mutilRouter/san">mutilRouter</router-link>
+    <router-link to="/mutilRouter/san">mutilRouter</router-link> |
+    <router-link to="/hi3/zhangsan/12345">Hi3_url_param</router-link> |
+    <router-link to="/home">Home</router-link> |
+    <router-link to="/goHi3/蒋介石/111111">GO_HI3</router-link>
 
     <router-view/>
   </div>

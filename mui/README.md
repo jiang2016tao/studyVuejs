@@ -159,7 +159,7 @@ routes: [
 ```html
 <p v-if="$route.query.userName">{{$route.query.userName}}</p>
 ```
-# 单页面多路由操作  
+## 单页面多路由操作  
 在mutilRouter.vue里添加上三个路由标签  
 ```html
 <div class="hello">
@@ -189,3 +189,55 @@ routes: [
 ```
 *注意使用的是components而不是component（我第一次就犯这个错了），这里的left和right与router-link标签里的name需要保持一致*  
 
+## url传参  
+- :冒号的形式传递参数  
+路由配置：  
+```js
+{
+      path: '/hi3/:name/:id',
+      component: Hi3
+    }
+```
+*注意这里的配置一定不要有name属性，否则会报错*  
+```html
+<router-link to="/hi3/zhangsan/12345">Hi3_url_param</router-link>
+```
+
+使用$route.params.name接收参数  
+```html
+<div>{{$route.params.name}}</div>
+    <div>{{$route.params.id}}</div>
+```
+正则表达式在url传值中的应用  
+我希望传递的Id是数字  
+```js
+{
+      path: '/hi3/:name/:id(\\d+)',
+      component: Hi3
+    }
+```
+例如：“http://localhost:8080/#/hi3/zhangsan/1234567s” 输入这样的url地址是不能跳转到预期的页面的，因为id不满足数字的要求。   
+加入了正则，我们再传递数字之外的其他参数，params.vue组件就没有办法接收到。  
+
+## redirect基本重定向  
+在有些时候，我们设置的路径不一致，但是我们打开的是同一个页面或同一个组件，这时就可以使用redirect。  
+```js
+{
+      path:"/home",
+      redirect:"/"
+    }
+```
+上面我们设置了path路径，但是我们并没有设置组件，而是设置了redirect，重定向到根目录，这样就相当于请求的是根目录的url链接。  
+```html
+<router-link to="/home">Home</router-link>
+```
+重定向时url参数  
+```js
+{
+      path:"/goHi3/:name/:id(\\d+)",
+      redirect:"/hi3/:name/:id(\\d+)"
+    }
+```
+```html
+<router-link to="/goHi3/蒋介石/111111">GO_HI3</router-link>
+```
