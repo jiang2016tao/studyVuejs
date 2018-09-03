@@ -8,11 +8,17 @@ import MutilRouter from "@/components/mutilRouter"
 import Left from "@/components/left"
 import Right from "@/components/right"
 import Hi3 from "@/components/Hi3"
+import Error from "@/components/Error"
 
 Vue.use(Router)
 
 export default new Router({
+  mode:"hash",
   routes: [
+    {
+      path:"*",
+      component:Error
+    },
     {
       path: '/',
       name: 'HelloWorld',
@@ -20,6 +26,7 @@ export default new Router({
     },{
       path: '/hi1',
       component: Hi1,
+      alias:"/goHi1",
       children:[
         // {path:"/",component:Hi1},
         {path:"sub1",component:Hi1Sub1}
@@ -27,7 +34,12 @@ export default new Router({
     },{
       path: '/hi2',
       component: Hi2,
-      name:"hi2"
+      name:"hi2",
+      // beforeEnter:(to,from,next)=> {
+      //   console.log(to);
+      //   console.log(from);
+      //   next();
+      // }
     },{
       path:"/mutilRouter",
       component:MutilRouter,

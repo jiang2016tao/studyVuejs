@@ -10,9 +10,13 @@
     <router-link to="/mutilRouter/san">mutilRouter</router-link> |
     <router-link to="/hi3/zhangsan/12345">Hi3_url_param</router-link> |
     <router-link to="/home">Home</router-link> |
-    <router-link to="/goHi3/蒋介石/111111">GO_HI3</router-link>
+    <router-link to="/goHi3/蒋介石/111111">GO_HI3</router-link> |
+    <router-link to="/goHi1">GO_HI1</router-link>
 
-    <router-view/>
+    <transition name="fade" mode="out-in">
+      <router-view/>
+    </transition>
+
   </div>
 </template>
 
@@ -30,5 +34,19 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+.fade-enter {
+  opacity:0;
+}
+.fade-leave{
+  opacity:1;
+}
+.fade-enter-active{
+  transition:opacity .5s;
+}
+.fade-leave-active{
+  opacity:0;
+  transition:opacity .5s;
 }
 </style>

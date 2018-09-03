@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <P>{{msg}}</P>
+    <button @click="forward">前进</button>
     <router-view name="left"/>
     <router-view />
     <router-view name="right"/>
@@ -13,6 +14,12 @@ export default {
   data () {
     return {
       msg: 'mutilRouter'
+    }
+  },
+  methods:{
+    forward(){
+      console.log("jiang");
+      this.$router.go(1);
     }
   }
 }
