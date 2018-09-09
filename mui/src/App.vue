@@ -11,7 +11,10 @@
     <router-link to="/hi3/zhangsan/12345">Hi3_url_param</router-link> |
     <router-link to="/home">Home</router-link> |
     <router-link to="/goHi3/蒋介石/111111">GO_HI3</router-link> |
-    <router-link to="/goHi1">GO_HI1</router-link>
+    <router-link to="/goHi1">GO_HI1</router-link> |
+    <router-link to="/count">Count</router-link> |
+    <router-link to="/mapStateCount">MapStateCount</router-link> |
+    <router-link to="/countModule">CountModule</router-link>
 
     <transition name="fade" mode="out-in">
       <router-view/>

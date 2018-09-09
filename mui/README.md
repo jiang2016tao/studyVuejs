@@ -384,3 +384,237 @@ this.$router.go(1)代表向前，注意一定要是经过this.$router.go(-1)后�
 - this.$router.push("XXXX")  
 this.$router.push("XXXX")可以指定跳转到某个路径下，例如我要跳转到根目录下。可以这样this.$router.push("/")。  
 *注意：这里使用的是$router，而参数的接收是$route，这里我是经常混淆的*  
+
+# Vuex  
+## 如何引入Vuex  
+1.npm install vuex --save  使用npm安装vuex   
+2.新建一个store.js文件，引入Vue和Vuex,使用我们vuex，引入之后用Vue.use进行引用。这样Vuex就算引用成功了。文件代码如下：  
+```js
+import Vue from 'vue';
+import Vuex from 'vuex';
+Vue.use(Vuex);
+const state={
+  count:1
+};
+
+export default new Vuex.Store({
+  state
+});
+```
+
+## state访问状态对象  
+- 通过computed的计算属性直接赋值  
+computed属性可以在输出前，对data中的值进行改变，我们就利用这种特性把store.js中的state值赋值给我们模板中的data值。   
+```js
+computed:{
+      count(){
+        return this.$store.state.count;
+      }
+    },
+```
+这里需要注意的是return this.$store.state.count这一句，一定要写this，要不你会找不到$store的。这种写法很好理解，但是写起来是比较麻烦的，那我们来看看第二种写法。  
+
+- 通过mapState的对象来赋值  
+首先要用import引入mapState。  
+```js
+import {mapState} from 'vuex';
+```
+然后还在computed计算属性里写如下代码：  
+```js
+computed:mapState({
+        count:state=>state.count
+ })
+```
+*注意*  
+>这里的computed的写法，计算属性都是在mapState这个方法所需的对象里。  
+下面的代码是错误的，这个是我之前这样写的。  
+```js
+    computed:{
+      count:state=>state.count
+    },
+```
+
+- 通过mapState的数组来赋值  
+```js
+computed:mapState(["count"]),
+```
+这个算是最简单的写法了，在实际项目开发当中也经常这样使用。  
+
+##  Mutations修改状态  
+在vue 中，只有mutation 才能改变state.  mutation 类似事件，每一个mutation都有一个类型和一个处理函数，
+因为只有mutation 才能改变state, 所以处理函数自动会获得一个默认参数 state. 所谓的类型其实就是名字  
+$store.commit( )这个可以用来执行我们store里Mutations里的方法。例如我们之前的代码：  
+在store.js文件里  
+```js
+const mutations={
+  add(state){
+    state.count++;
+  },
+  reduce(state){
+    state.count--;
+  }
+}
+```
+在count.vue页面上调用  
+```html
+<button @click="$store.commit('add')">+</button>
+    <button @click="$store.commit('reduce')">-</button>
+```
+这只是一个简单的方法，下面我们来看一下如何给函数传值  
+```js
+const mutations={
+  add(state,n){
+    state.count+=n;
+  },
+  reduce(state){
+    state.count--;
+  }
+}
+```
+上面给add添加了参数n  
+```html
+<button @click="$store.commit('add',10)">+</button>
+    <button @click="$store.commit('reduce')">-</button>
+```
+注意观察是如何传值的  
+### 模板获取Mutations方法  
+实际开发中我们也不喜欢看到$store.commit( )这样的方法出现，我们希望跟调用模板里的方法一样调用。  
+例如：@click=”reduce” 就和没引用vuex插件一样。  
+要达到这种写法，只需要简单的两部就可以了：  
+1.在mapstateCount.vue模板中引入mapMutations   
+```js
+import {mapState,mapMutations } from "vuex"
+```
+2.在模板的<script>标签里添加methods属性，并加入mapMutations  
+```js
+methods:mapMutations(["add","reduce"]),
+```
+通过上边两部，我们已经可以在模板中直接使用我们的reduce或者add方法了，就像下面这样  
+```html
+<div>
+      <button  @click="add(10)">+</button>
+      <button  @click="reduce">-</button>
+    </div>
+```
+
+## getters计算过滤操作   
+### getters基本用法：  
+比如我们现在要对store.js文件中的count进行一个计算属性的操作，就是在它输出前，给它加上100.  
+我们首先要在store.js里用const声明我们的getters属性。  
+```js
+const getters={
+  count:state=>state.count+=100
+}
+```
+写好了gettters之后，我们还需要在Vuex.Store()里引入，由于之前我们已经引入了state盒mutations，所以引入里有三个引入属性。代码如下，   
+```js
+export default new Vuex.Store({
+  state,
+  mutations,
+  getters
+});
+```
+在store.js里的配置算是完成了，我们需要到模板页对computed进行配置。在vue 的构造器里边只能有一个computed属性，如果你写多个，只有最后一个computed属性可用，
+所以要对上节课写的computed属性进行一个改造。改造时我们使用ES6中的展开运算符”…”。  
+```js
+computed:{
+      ...mapState(["count"]),
+      count(){
+        return this.$store.getters.count;
+      }
+    },
+```
+需要注意的是，你写了这个配置后，在每次count 的值发生变化的时候，都会进行加100的操作。   
+还是有些场景需要用到的：例如价格和金额在数字前面加上人民币的符号……  
+### 用mapGetters简化模板写法  
+import引入我们的`mapGetters  
+  ```js
+  import { mapState,mapMutations,mapGetters } from 'vuex';
+  ```
+  在computed属性中加入mapGetters  
+  ```js
+  computed:{
+        ...mapState(["count"]),
+        ...mapGetters(["count"])
+      }
+  ```
+
+## actions异步修改状态   
+actions和之前讲的Mutations功能基本一样，不同点是，actions是异步的改变state状态，而Mutations是同步改变状态。  
+```js
+const actions={
+  addAction(context,n){
+    context.commit("add",n);
+  },
+  reduceAction({commit}){
+    commit("reduce");
+  }
+}
+```
+在store.js中声明actions actions是可以调用Mutations里的方法的。
+在actions里写了两个方法addAction和reduceAction，在方法体里，我们都用commit调用了Mutations里边的方法。细心的小伙伴会发现这两个方法传递的参数也不一样。
+> - context：上下文对象，这里你可以理解称store本身。  
+> - {commit}：直接把commit对象传递过来，可以让方法体逻辑和代码更清晰明了。  
+
+在模板中调用：  
+```html
+<div>
+      <button  @click="$store.dispatch('addAction',10)">+</button>
+      <button  @click="$store.dispatch('reduceAction')">-</button>
+    </div>
+```
+### mapActions简化模板用法  
+引入mapActions  
+```js
+import {mapState,mapMutations,mapGetters,mapActions } from "vuex"
+```
+将action写入模板的methods里  
+```js
+methods:{
+      ...mapMutations(["add","reduce"]),
+      ...mapActions(["addAction","reduceAction"])
+    }
+```
+在模板里使用:  
+```html
+<div>
+      <button  @click="addAction(10)">+</button>
+      <button  @click="reduceAction">-</button>
+    </div>
+```
+
+*注意：*   
+*这里提到mutation必需是同步的，action可以是异步的。个人觉得技术胖没有讲明白。*  
+*mutation是直接改变store的状态的，有vuex的架构性质，他是同步即立刻改变状态，知道状态变化的来源。
+action可以是异步的，方便一些业务逻辑的处理，但是要想改变store的状态那还是必需调用mutation相应方法来处理。*  
+*[Vuex中mutations和actions的区别](https://blog.csdn.net/ycz19930423/article/details/77505573)*  
+*[Vuex中mutations和actions的基本使用](https://www.cnblogs.com/SamWeb/p/6543931.html)*   
+
+## module模块组  
+随着项目的复杂性增加，我们共享的状态越来越多，这时候我们就需要把我们状态的各种操作进行一个分组，分组后再进行按组编写。(据说一般不会使用到)  
+在storeModule.js文件中  
+```js
+const moduleA={
+  state,
+  mutations,
+  getters,
+  actions};
+
+export default new Vuex.Store({
+  modules:{a:moduleA}
+});
+```
+在模板中使用的形式：  
+```js
+computed:{
+      count(){
+        return this.$store.state.a.count;
+      }
+    }
+```
+*this.$store.state.a.count;加上了module的名称*  
+但是我不知道为啥里面的mutation的不需要。下面的代码在使用modules依然有效  
+```html
+<button @click="$store.commit('add',10)">+</button>
+    <button @click="$store.commit('reduce')">-</button>
+```

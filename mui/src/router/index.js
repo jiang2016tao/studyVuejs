@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+// import Vuex from "vuex"
 import HelloWorld from '@/components/HelloWorld'
 import Hi1 from "@/components/Hi1"
 import Hi1Sub1 from "@/components/Hi1Sub1"
@@ -9,8 +10,13 @@ import Left from "@/components/left"
 import Right from "@/components/right"
 import Hi3 from "@/components/Hi3"
 import Error from "@/components/Error"
+import Count from "@/components/count"
+import MapStateCount from "@/components/mapstateCount"
+import CountModule from "@/components/countModule"
 
-Vue.use(Router)
+Vue.use(Router);
+
+// Vue.use(Vuex);
 
 export default new Router({
   mode:"hash",
@@ -18,6 +24,15 @@ export default new Router({
     {
       path:"*",
       component:Error
+    },{
+      path:"/countModule",
+      component:CountModule
+    },{
+      path:"/mapStateCount",
+      component:MapStateCount
+    },{
+      path:"/count",
+      component:Count
     },
     {
       path: '/',
