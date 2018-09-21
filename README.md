@@ -118,6 +118,19 @@ vue中样式的绑定不能按照常规的html的style格式来书写，需要�
                             <span>jiang</span>
                         </li>
 ```
+# v-for  
+在使用v-for标签里一定要设置标签的key属性，不然会有报错的。  
+```html
+<el-menu :default-active="activeIndex" mode="horizontal" :router=true @select="handleSelect" class="el-menu-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04d">
+        <el-submenu v-for="menu,i in menuData" :index="''+i" :key="i">
+          <template slot="title">{{menu.name}}</template>
+          <el-submenu v-for="menuTitle,j in menu.children" :index="i+'-'+j" :key="i+'-'+j">
+            <template slot="title">{{menuTitle.name}}</template>
+            <el-menu-item v-for="menuItem,z in menuTitle.children" :index="menuItem.url | urlFilter" :key="i+'-'+j+'-'+z">{{menuItem.url | urlFilter}}-{{menuItem.name}}</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+      </el-menu>
+```
 # Vue全局API  
 ## vue.directive  
 *问题*  

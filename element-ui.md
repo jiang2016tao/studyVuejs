@@ -21,7 +21,8 @@ handleCurrentChange(val){
             },
 ```
 ## el-table  
-1.表格这是一个经常用到的，在移动小屏幕上很多字段是不会展示全的，所以需要有可以查看详情的，这里就提供了支持。可以结合文档说明来使用。开始以为只能按照文档的格式来写，后来发现其实详情里面的html是可以自己随意布局的。
+1.表格这是一个经常用到的，在移动小屏幕上很多字段是不会展示全的，所以需要有可以查看详情的，这里就提供了支持。可以结合文档说明来使用。开始以为只能按照文档的格式来写，
+后来发现其实详情里面的html是可以自己随意布局的。
 ```html
 <el-table>
 <el-table-column type="expand">
@@ -114,7 +115,7 @@ columnClick(row,column,cell,event){
 2.表格中经常会出现单元格的内容过长，不希望换行而是自动隐藏。最开始我们使用了模板，自己写一些样式在里面，在pc浏览器上是可以的，但是在pad就不行了。使用各种方法都不行，后来发现在默认情况下若内容过多会折行显示，若需要单行显示可以使用show-overflow-tooltip属性，它接受一个Boolean，为true时多余的内容会在 hover 时以 tooltip 的形式显示出来。  
 http://blog.csdn.net/u012108512/article/details/78752736  
 
-3.在table中添加事件处理，查看文档可以知道单元格的事件的添加(cell-click)。
+3.在table中添加事件处理，查看文档可以知道单元格的事件的添加(cell-click)。(这个是进一步对函数解释，并不是与上面的重复)
 ```html
 <el-table :data="aelData.comAlertLists" :row-key="getListId" :expand-row-keys="expands" @cell-click="columnClick">
 ```
@@ -139,3 +140,25 @@ columnClick(row,column,cell,event){
                 }
             },
 ```
+## el-menu  
+参看文档可以知道el-menu的基本使用，我这里只是记录我使用的理解。  
+```html
+<el-menu :default-active="activeIndex" mode="horizontal" :router=true @select="handleSelect" class="el-menu-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04d">
+        <el-submenu v-for="menu,i in menuData" :index="''+i" :key="i">
+          <template slot="title">{{menu.name}}</template>
+          <el-submenu v-for="menuTitle,j in menu.children" :index="i+'-'+j" :key="i+'-'+j">
+            <template slot="title">{{menuTitle.name}}</template>
+            <el-menu-item v-for="menuItem,z in menuTitle.children" :index="menuItem.url | urlFilter" :key="i+'-'+j+'-'+z">{{menuItem.url | urlFilter}}-{{menuItem.name}}</el-menu-item>
+          </el-submenu>
+        </el-submenu>
+      </el-menu>
+```
+**el-menu部分属性**  
+| 属性 | 说明 |
+| ---- | ---- |
+| default-active | 菜单默认显示那个 |
+| router         | boolean值，true：表示index对应的是路径，*这里的路径是相对于根目录的，例如metricView是/smart_web的子连接，虽然这个页面当前是在/smart_web路径下，
+但是index依然要写全路径* |
+  
+**注意**  
+el-submenu的index属性是必须要填写的项。  
